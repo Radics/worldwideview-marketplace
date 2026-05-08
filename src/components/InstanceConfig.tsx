@@ -28,11 +28,20 @@ export default function InstanceConfig({ onConfigured, onCancel, returnPath }: P
         e.stopPropagation();
         setStatus("testing");
         setErrorMsg("");
-        const normalized = url.replace(/\/+$/, "");
+        
+        let sanitizedUrl = url;
+        if (sanitizedUrl.includes("0.0.0.0")) {
+            sanitizedUrl = sanitizedUrl.replace("0.0.0.0", "localhost");
+        }
+        
         try {
-            const res = await fetch(`${normalized}/api/auth/setup-status`, {
+            const res = await fetch("/api/test-connection", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ url: sanitizedUrl }),
                 signal: AbortSignal.timeout(5000),
             });
+            
             if (!res.ok) {
                 setStatus("error");
                 setErrorMsg(
@@ -60,11 +69,18 @@ export default function InstanceConfig({ onConfigured, onCancel, returnPath }: P
     function handleSave(e: React.MouseEvent) {
         e.preventDefault();
         e.stopPropagation();
-        setInstanceUrl(url);
+        
+        let sanitizedUrl = url;
+        // Browsers block direct navigation to 0.0.0.0 — automatically swap to localhost
+        if (sanitizedUrl.includes("0.0.0.0")) {
+            sanitizedUrl = sanitizedUrl.replace("0.0.0.0", "localhost");
+        }
+        
+        setInstanceUrl(sanitizedUrl);
         // Redirect to WWV to obtain a marketplace token via session auth.
         // WWV will redirect back to returnPath with ?token=<jwt>.
         const returnTo = returnPath ?? window.location.href.split("?")[0];
-        const grantUrl = new URL(`${url.replace(/\/+$/, "")}/api/marketplace/grant-token`);
+        const grantUrl = new URL(`${sanitizedUrl.replace(/\/+$/, "")}/api/marketplace/grant-token`);
         grantUrl.searchParams.set("redirectTo", returnTo);
         window.location.href = grantUrl.toString();
     }
