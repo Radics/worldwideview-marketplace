@@ -35,10 +35,13 @@ export default function InstanceConfig({ onConfigured, onCancel, returnPath }: P
         }
         
         try {
-            const res = await fetch("/api/test-connection", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url: sanitizedUrl }),
+            const targetUrl = `${sanitizedUrl.replace(/\/+$/, "")}/api/auth/setup-status`;
+            const res = await fetch(targetUrl, {
+                method: "GET",
+                headers: {
+                    "Accept": "application/json",
+                    "x-marketplace-ping": "true"
+                },
                 signal: AbortSignal.timeout(5000),
             });
             
