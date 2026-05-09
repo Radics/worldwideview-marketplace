@@ -3,7 +3,7 @@ FROM node:22-alpine AS deps
 RUN corepack enable pnpm
 RUN apk add --no-cache python3 make g++
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml .npmrc ./
 RUN pnpm i --frozen-lockfile
 
 # ── Stage 2: Install PRODUCTION-ONLY dependencies ──
@@ -11,7 +11,7 @@ FROM node:22-alpine AS proddeps
 RUN corepack enable pnpm
 RUN apk add --no-cache python3 make g++
 WORKDIR /app
-COPY package.json pnpm-lock.yaml ./
+COPY package.json pnpm-lock.yaml .npmrc ./
 RUN pnpm i --prod --frozen-lockfile
 
 # ── Stage 3: Build the application ──

@@ -1,6 +1,7 @@
 {
   "name": "worldwideview-marketplace",
-  "version": "1.4.2",
+  "version": "1.4.3",
+  "packageManager": "pnpm@10.33.0",
   "private": true,
   "description": "Marketplace for WorldWideView plugins — browse, publish, and install data sources",
   "scripts": {
@@ -34,7 +35,9 @@
       "better-sqlite3",
       "prisma",
       "sharp",
-      "unrs-resolver"
+      "unrs-resolver",
+      "@unrs/resolver-binding-linux-x64-gnu",
+      "@unrs/resolver-binding-linux-x64-musl"
     ]
   }
 }
