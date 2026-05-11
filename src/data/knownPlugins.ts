@@ -25,17 +25,17 @@ export type Category = (typeof CATEGORIES)[number];
  */
 export const KNOWN_PLUGINS: KnownPlugin[] = [
   {
-    id: "aviation",
-    npmPackage: "@worldwideview/wwv-plugin-aviation",
+    id: "wwv-plugin-aviation-adsb",
+    npmPackage: "@worldwideview/wwv-plugin-aviation-adsb",
     icon: "Plane",
     category: "Aviation",
     format: "bundle",
     trust: "built-in",
-    capabilities: ["data:own", "network:fetch", "storage:write"],
+    capabilities: ["data:own", "network:fetch"],
     longDescription:
-      "Track thousands of aircraft in real time using the OpenSky Network API. Displays aircraft with altitude-based coloring, directional 3D models, and smooth interpolation. Supports historical playback via the server-side data layer and Supabase fallback.",
+      "Track civilian and commercial aircraft in real time using the adsb.lol open ADS-B network. Renders aircraft with altitude-based billboard coloring (green=grounded to pink=>12km), callsign labels, and range-based altitude filtering. Works from all networks.",
     changelog:
-      "v1.0.0 — Initial release with live tracking, altitude coloring, and 3D model rendering.",
+      "v1.0.0 — Initial release replacing OpenSky (unreachable). Uses adsb.lol for reliable civilian ADS-B data.",
   },
   {
     id: "maritime",
